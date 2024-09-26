@@ -13,7 +13,7 @@ wss.on('connection', function connection(ws) {
     })
 })
 
-const API_KEY = '1T09JUTGOPD2ZXMY'; // Replace with your Alpha Vantage API key
+const API_KEY = ''; // Replace with your Alpha Vantage API key
 const SYMBOL = 'IBM';
 const INTERVAL = '5min';
 const ALPHA_VANTAGE_URL = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${SYMBOL}&interval=${INTERVAL}&apikey=${API_KEY}`;
