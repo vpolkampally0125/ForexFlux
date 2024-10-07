@@ -8,13 +8,13 @@ const Navbar = (): JSX.Element => {
     return  (
 
         <div className='navbar'>
-            <div className='navbar-left'>
+            <div>
                 <Button className={selected === "hello" ? 'navbar-item-selected' : 'navbar-item'} onClick={() => setSelected("hello")}>Hello</Button>
             </div>
-            <div className='navbar-center'>
+            <div>
                 <Button className={selected === "world" ? 'navbar-item-selected' : 'navbar-item'} onClick={() => setSelected("world")}>World</Button>
             </div>
-            <div className='navbar-right'>
+            <div>
                 <Button className={selected === "vishnu" ? 'navbar-item-selected' : 'navbar-item'} onClick={() => setSelected("vishnu")}>Vishnu</Button>
             </div>
         </div>
