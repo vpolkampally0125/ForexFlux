@@ -39,21 +39,6 @@
   outline-color: white;
 }
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-}
-
-.navbar-center {
-  display: flex;
-  align-items: center;
-}
-
-.navbar-right {
-  display: flex;
-  align-items: center;
-}
-
 .logo {
   height: 6em;
   padding: 1.5em;
