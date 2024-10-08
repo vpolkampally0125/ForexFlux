@@ -1,8 +1,14 @@
 import React, {useEffect, useState}  from 'react'
 
 interface ForexRate {
-    pair: string,
-    price: number
+    messageType: string,
+    ticker: string,
+    date: string,
+    bidSize: number,
+    bidPrice: number,
+    midPrice: number,
+    askSize: number,
+    askPrice: number
 }
 
 const ForexRateStream: React.FC = () => {
@@ -16,12 +22,30 @@ const ForexRateStream: React.FC = () => {
         }
 
         socket.onmessage = (event: MessageEvent) => {
-            try{
-                const data: ForexRate = JSON.parse(event.data)
-                setRates(data)
-            }catch (error) {
-                console.log('This is the error:', error);
-            }
+            const blob = event.data;
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const textData = reader.result as string;  
+                    const parsedData = JSON.parse(textData);
+                    const data = parsedData.data
+                    console.log(data)
+                    const forexRate: ForexRate = { 
+                        messageType: data[0],          // "Q" (Update Message Type)
+                        ticker: data[1],               // Ticker (string)
+                        date: data[2],                 // Date (ISO string)
+                        bidSize: data[3],              // Bid Size (number)
+                        bidPrice: data[4],             // Bid Price (number)
+                        midPrice: data[5],             // Mid Price (number)
+                        askSize: data[6],              // Ask Size (number)
+                        askPrice: data[7]              // Ask Price (number)
+                    };
+                    setRates(forexRate);
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                }
+            };
+            reader.readAsText(blob);
         };
 
         socket.onerror = (error) => {
@@ -38,9 +62,14 @@ const ForexRateStream: React.FC = () => {
         <div>
           {rates ? (
             <div>
-              {/* Render the forex rates */}
-              <p>{`Currency Pair: ${rates.pair}`}</p>
-              <p>{`Price: ${rates.price}`}</p>
+              <p>{`Service: ${rates.messageType}`}</p>
+              <p>{`Ticker: ${rates.ticker}`}</p>
+              <p>{`Date: ${rates.date}`}</p>
+              <p>{`Bid Size: ${rates.bidSize}`}</p>
+              <p>{`Bid Price: ${rates.bidPrice}`}</p>
+              <p>{`Mid Price: ${rates.midPrice}`}</p>
+              <p>{`Ask Size: ${rates.askSize}`}</p>
+              <p>{`Ask Price: ${rates.askPrice}`}</p>
             </div>
           ) : (
             <p>Loading forex rates...</p>
@@ -50,4 +79,3 @@ const ForexRateStream: React.FC = () => {
 }
 
 export default ForexRateStream;
-
