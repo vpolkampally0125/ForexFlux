@@ -27,7 +27,9 @@ ws.on('open', function open() {
 });
 
 ws.on('message', function(data: WebSocket.RawData, flags) {
-    console.log(data)
+    const jsonString = data.toString('utf-8');
+    const jsonData = JSON.parse(jsonString);
+    console.log(jsonData)
 
     wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
