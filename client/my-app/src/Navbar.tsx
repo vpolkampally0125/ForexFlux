@@ -20,7 +20,6 @@ const Navbar = (): JSX.Element => {
                 </div>
             </div>
             <ForexRateStream />
-
         </>
         
         
