@@ -12,7 +12,7 @@ interface ForexRate {
 }
 
 const ForexRateStream: React.FC = () => {
-    const [rates, setRates] = useState<ForexRate | null>(null);
+    const [rates, setRates] = useState<ForexRate[]>([]);
 
     useEffect(() => {
         const socket = new WebSocket('ws://localhost:8080')
@@ -40,7 +40,7 @@ const ForexRateStream: React.FC = () => {
                         askSize: data[6],              // Ask Size (number)
                         askPrice: data[7]              // Ask Price (number)
                     };
-                    setRates(forexRate);
+                    setRates((prevRates) => [...prevRates, forexRate]);
                 } catch (error) {
                     console.error('Error parsing JSON:', error);
                 }
@@ -60,17 +60,20 @@ const ForexRateStream: React.FC = () => {
 
     return (
         <div>
-          {rates ? (
-            <div>
-              <p>{`Service: ${rates.messageType}`}</p>
-              <p>{`Ticker: ${rates.ticker}`}</p>
-              <p>{`Date: ${rates.date}`}</p>
-              <p>{`Bid Size: ${rates.bidSize}`}</p>
-              <p>{`Bid Price: ${rates.bidPrice}`}</p>
-              <p>{`Mid Price: ${rates.midPrice}`}</p>
-              <p>{`Ask Size: ${rates.askSize}`}</p>
-              <p>{`Ask Price: ${rates.askPrice}`}</p>
-            </div>
+          {rates ? (rates.map((rate) => (
+            <li>
+                <div>
+                    <p>{`Service: ${rate.messageType}`}</p>
+                    <p>{`Ticker: ${rate.ticker}`}</p>
+                    <p>{`Date: ${rate.date}`}</p>
+                    <p>{`Bid Size: ${rate.bidSize}`}</p>
+                    <p>{`Bid Price: ${rate.bidPrice}`}</p>
+                    <p>{`Mid Price: ${rate.midPrice}`}</p>
+                    <p>{`Ask Size: ${rate.askSize}`}</p>
+                    <p>{`Ask Price: ${rate.askPrice}`}</p>
+                </div>
+            </li>
+          ))  
           ) : (
             <p>Loading forex rates...</p>
           )}
